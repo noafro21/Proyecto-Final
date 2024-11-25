@@ -1,13 +1,17 @@
-
 package proyectofinal;
 
 public class ProyectoFinal {
 
     public static void main(String[] args) {
- Usuario miSistema = new Usuario();
-       
-       miSistema.ingresarDatos();
-       miSistema.validarUsuario(); 
+
+      
+      Usuario miValidacion = new Usuario();
+      Usuario.ingresarDatos ();
+      miValidacion.validarUsuario();
+      
+      MenuPrincipal miMenu = new MenuPrincipal();
+        miMenu.menuSistema();
+
     }
-  
+
 }
