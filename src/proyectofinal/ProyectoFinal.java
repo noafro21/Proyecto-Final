@@ -4,13 +4,18 @@ public class ProyectoFinal {
 
     public static void main(String[] args) {
 
-      
+       //MenuPrincipal miMenu = new MenuPrincipal();
       Usuario miValidacion = new Usuario();
+   
       Usuario.ingresarDatos ();
+      miValidacion.cargaDatosArchivo();
       miValidacion.validarUsuario();
       
-      MenuPrincipal miMenu = new MenuPrincipal();
-        miMenu.menuSistema();
+      //miInventario.guardarArticulo();
+     // miInventario.registrarArticulo();
+      
+     
+      
 
     }
 

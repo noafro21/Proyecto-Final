@@ -2,12 +2,12 @@ package proyectofinal;
 
 public class ArregloParaInventario {
 
-    public String articulos, codigo, marca, modelo;
+    public String codigo, marca, modelo;
     public double precio;
     public int cantidad;
 
     public ArregloParaInventario(String codigo, String marca, String modelo, double precio, int cantidad) {
-
+        
         this.codigo = codigo;
         this.marca = marca;
         this.modelo = modelo;
@@ -15,13 +15,7 @@ public class ArregloParaInventario {
         this.cantidad = cantidad;
     }
 
-    public String getArticulos() {
-        return articulos;
-    }
-
-    public void setArticulos(String articulos) {
-        this.articulos = articulos;
-    }
+   
 
     public String getCodigo() {
         return codigo;
