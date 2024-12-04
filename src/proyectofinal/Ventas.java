@@ -1,105 +1,115 @@
-
 package proyectofinal;
 
 import javax.swing.JOptionPane;
 
 public class Ventas {
-    private static String[] articulos = {"Teléfono celular", "Cargador", "Audífonos"};
-    private static double[] precios = {500.00, 20.00, 15.00};
-    private static int[] stock = {10, 20, 15};
 
-    
-   
+    private static Inventario inventario = new Inventario();
+    private static int[] carrito = new int[10];
+
     public static void mostrarMenu() {
-        int[] carrito = new int[articulos.length]; 
+        inventario.guardarArticulo();
         boolean salir = false;
+
+        if (Usuario.rolActive == Roles.Sin_Rol) {
+            JOptionPane.showMessageDialog(null, "Debe iniciar sesión primero.");
+            return;
+        }
 
         while (!salir) {
             String[] opciones = {"Teléfonos celulares", "Accesorios", "Finalizar compra"};
             String seleccion = (String) JOptionPane.showInputDialog(
-                null, 
-                "Seleccione un área:", 
-                "Menú principal", 
-                JOptionPane.QUESTION_MESSAGE, 
-                null, 
-                opciones, 
-                opciones[0]);
+                    null,
+                    "Seleccione un área:",
+                    "Menú de ventas",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]);
 
             if (seleccion == null || seleccion.equals("Finalizar compra")) {
-                finalizarCompra(carrito);
+                finalizarCompra();
                 salir = true;
             } else {
-                mostrarArticulos(seleccion, carrito);
+                mostrarArticulos(seleccion);
             }
         }
     }
 
-  
-    private static void mostrarArticulos(String categoria, int[] carrito) {
+    private static void mostrarArticulos(String categoria) {
         String[] opciones;
         int inicio, fin;
 
         if (categoria.equals("Teléfonos celulares")) {
             inicio = 0;
-            fin = 1; 
+            fin = 5;
         } else {
-            inicio = 1;
-            fin = articulos.length; 
+            inicio = 5;
+            fin = inventario.inventario.size();
         }
 
         opciones = new String[fin - inicio];
         for (int i = inicio; i < fin; i++) {
-            opciones[i - inicio] = articulos[i];
+            ArregloParaInventario producto = inventario.inventario.get(i);
+            opciones[i - inicio] = producto.getMarca() + " " + producto.getModelo();
         }
 
         String articulo = (String) JOptionPane.showInputDialog(
-            null, 
-            "Seleccione un artículo:", 
-            "Artículos disponibles", 
-            JOptionPane.QUESTION_MESSAGE, 
-            null, 
-            opciones, 
-            opciones[0]);
+                null,
+                "Seleccione un artículo:",
+                "Artículos disponibles",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]);
 
         if (articulo != null) {
-            agregarAlCarrito(articulo, carrito);
+            agregarAlCarrito(categoria, articulo);
         }
     }
 
-   
-    private static void agregarAlCarrito(String articulo, int[] carrito) {
+    private static void agregarAlCarrito(String categoria, String articulo) {
         int index = -1;
-        for (int i = 0; i < articulos.length; i++) {
-            if (articulos[i].equals(articulo)) {
+        for (int i = 0; i < inventario.inventario.size(); i++) {
+            ArregloParaInventario producto = inventario.inventario.get(i);
+            if ((categoria.equals("Teléfonos celulares") && i < 5
+                    || categoria.equals("Accesorios") && i >= 5)
+                    && (producto.getMarca() + " " + producto.getModelo()).equals(articulo)) {
                 index = i;
                 break;
             }
         }
 
-        if (index == -1) return; 
+        if (index == -1) {
+            return;
+        }
 
+        ArregloParaInventario producto = inventario.inventario.get(index);
         String cantidadStr = JOptionPane.showInputDialog(
-            null, 
-            "Ingrese la cantidad (Stock: " + stock[index] + "):", 
-            "Agregar al carrito", 
-            JOptionPane.QUESTION_MESSAGE);
+                null,
+                "Ingrese la cantidad (Stock: " + producto.getCantidad() + "):",
+                "Agregar al carrito",
+                JOptionPane.QUESTION_MESSAGE);
 
-        if (cantidadStr == null) return; 
+        if (cantidadStr == null) {
+            return;
+        }
+
         try {
             int cantidad = Integer.parseInt(cantidadStr);
 
-            if (cantidad > stock[index]) {
+            if (cantidad > producto.getCantidad()) {
                 JOptionPane.showMessageDialog(null, "No hay suficiente stock disponible.");
                 return;
             }
 
-            if (index == 0 && (carrito[index] + cantidad > 2)) {
+            if (carrito[index] + cantidad > 2 && index < 5) {
                 JOptionPane.showMessageDialog(null, "Solo se pueden comprar hasta 2 teléfonos celulares.");
                 return;
             }
 
             carrito[index] += cantidad;
-            stock[index] -= cantidad;
+            producto.setCantidad(producto.getCantidad() - cantidad);
 
             JOptionPane.showMessageDialog(null, "Artículo agregado al carrito.");
         } catch (NumberFormatException e) {
@@ -107,7 +117,7 @@ public class Ventas {
         }
     }
 
-    private static void finalizarCompra(int[] carrito) {
+    private static void finalizarCompra() {
         boolean carritoVacio = true;
         for (int cantidad : carrito) {
             if (cantidad > 0) {
@@ -128,15 +138,18 @@ public class Ventas {
         StringBuilder recibo = new StringBuilder("Detalles de la compra:\n");
         double total = 0;
 
-        for (int i = 0; i < articulos.length; i++) {
+        for (int i = 0; i < inventario.inventario.size(); i++) {
+            ArregloParaInventario producto = inventario.inventario.get(i);
             if (carrito[i] > 0) {
-                recibo.append(articulos[i])
-                      .append(" x")
-                      .append(carrito[i])
-                      .append(" - $")
-                      .append(precios[i] * carrito[i])
-                      .append("\n");
-                total += precios[i] * carrito[i];
+                recibo.append(producto.getMarca())
+                        .append(" ")
+                        .append(producto.getModelo())
+                        .append(" x")
+                        .append(carrito[i])
+                        .append(" - $")
+                        .append(producto.getPrecio() * carrito[i])
+                        .append("\n");
+                total += producto.getPrecio() * carrito[i];
             }
         }
 
@@ -149,5 +162,4 @@ public class Ventas {
 
         JOptionPane.showMessageDialog(null, recibo.toString(), "Recibo", JOptionPane.INFORMATION_MESSAGE);
     }
-    
 }

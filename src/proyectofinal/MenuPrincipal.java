@@ -1,22 +1,23 @@
 package proyectofinal;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class MenuPrincipal {
 
 //Menú principal del sistema
     public static void menuSistema() {
+        ImageIcon miSistema = new ImageIcon("src\\proyectofinal\\img\\generalSistema");
         boolean seguir = true;
         String opcS;
 
         while (Validaciones.numeroV) {
             while (seguir) {
-                opcS = JOptionPane.showInputDialog(null, "Seleccione la opcion: \n"
+                opcS = JOptionPane.showInputDialog(null,"Seleccione la opcion: \n"
                         + "1. Control Inventario \n"
                         + "2. Control Ventas \n"
                         + "3. Control Usuario \n"
-                        + "4. Salir ", " Menú principal del sistema", JOptionPane.INFORMATION_MESSAGE);
-
+                        + "4. Salir ", " Menú principal del sistema",JOptionPane.INFORMATION_MESSAGE);
                 Validaciones.validarNumeros(opcS);
                 switch (opcS) {
                     case "1":
@@ -55,7 +56,7 @@ public class MenuPrincipal {
                     + "1. Registrar Producto\n"
                     + "2. Modificar Producto\n"
                     + "3. Consultar Inventario\n"
-                    + "4. Regresar");
+                    + "4. Regresar","Control de Inventario", JOptionPane.INFORMATION_MESSAGE);
             switch (opcI) {
                 case "1":
                     registrar.registrarArticulo();
@@ -68,10 +69,9 @@ public class MenuPrincipal {
                     break;
                 case "4":
                     seguir = false;
-                    //JOptionPane.showMessageDialog(null, "Regresando al menú principal");
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Opción inválida. Intente de nuevo.");
+                    JOptionPane.showMessageDialog(null, "Opción inválida. Intente de nuevo." ,"Atención", JOptionPane.ERROR_MESSAGE);
                     break;
             }
         }
@@ -87,7 +87,7 @@ public class MenuPrincipal {
                     + "1. Registrar Usuario \n"
                     + "2. Modificar Usuario \n"
                     + "3. Consultar Usuario \n"
-                    + "4. Regresar ");
+                    + "4. Regresar ","Control de Inventario", JOptionPane.INFORMATION_MESSAGE);
             switch (opcU) {
                 case "1":
                     Usuario.registrarUsuario();
