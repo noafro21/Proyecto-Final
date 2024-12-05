@@ -127,13 +127,13 @@ public class Ventas {
         }
 
         if (carritoVacio) {
-            JOptionPane.showMessageDialog(null, "El carrito está vacío. ¡Gracias por su visita!");
+            JOptionPane.showMessageDialog(null, "El carrito está vacío. ¡Gracias por su visita!", "¡Atención!", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        String nombre = JOptionPane.showInputDialog("Ingrese su nombre:");
-        String cedula = JOptionPane.showInputDialog("Ingrese su cédula:");
-        String correo = JOptionPane.showInputDialog("Ingrese su correo electrónico:");
+        String nombre = JOptionPane.showInputDialog(null,"Ingrese su nombre:", "Datos del cliente", JOptionPane.INFORMATION_MESSAGE);
+        String cedula = JOptionPane.showInputDialog(null,"Ingrese su cédula:", "Datos del cliente", JOptionPane.INFORMATION_MESSAGE);
+        String correo = JOptionPane.showInputDialog(null,"Ingrese su correo electrónico:", "Datos del cliente", JOptionPane.INFORMATION_MESSAGE);
 
         StringBuilder recibo = new StringBuilder("Detalles de la compra:\n");
         double total = 0;

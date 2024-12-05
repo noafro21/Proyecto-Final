@@ -1,13 +1,11 @@
 package proyectofinal;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class MenuPrincipal {
 
 //Menú principal del sistema
     public static void menuSistema() {
-        ImageIcon miSistema = new ImageIcon("src\\proyectofinal\\img\\generalSistema");
         boolean seguir = true;
         String opcS;
 
