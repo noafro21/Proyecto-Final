@@ -13,6 +13,7 @@ public class Usuario {
     public static Roles rolAsignado;
     public static Roles rolActive;
 
+    @SuppressWarnings("resource")
     public void cargaDatosArchivo() {
 ImageIcon miRegistro = new ImageIcon("src\\proyectofinal\\img\\registro.png");
         FileReader lectorArchivo;
@@ -130,7 +131,7 @@ ImageIcon miUser = new ImageIcon("src\\proyectofinal\\img\\user.png");
                     rol = asignarRol();
                     registroUsuario[i] = new ArregloParaUsuario(nombre1, apellidos1, cedula1, password1, rol);
 
-                    registrar = JOptionPane.showConfirmDialog(null, "¿Desea registrar otro usuario","Nuevo Ingreso",JOptionPane.QUESTION_MESSAGE);
+                    registrar = JOptionPane.showConfirmDialog(null, "¿Desea registrar otro usuario","Nuevo Ingreso", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
                     if (registrar == 1 || registrar == 2) {
                         seguir = false;
@@ -150,12 +151,11 @@ ImageIcon miUser = new ImageIcon("src\\proyectofinal\\img\\user.png");
 
     public static Roles asignarRol() {
         int rolA;
-
+        
         String[] opciones = {"Administrador", "Trabajador"};
 
         rolA = JOptionPane.showOptionDialog(null, "Seleccione el rol del usuario:",
-                "Asignación Rol", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                "Asignación Rol",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.OK_CANCEL_OPTION, null, opciones, opciones[0]);
         switch (rolA) {
             case 0:
                 rolAsignado = Roles.Administrador;
